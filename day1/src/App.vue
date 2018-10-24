@@ -10,7 +10,6 @@
         </span> -->
       </li>
       <form @submit.prevent="save">
-        <span>{{ errors.first('new-todo') }}</span>
         <input type="text" v-validate="'required'" v-model="newTodo" name="new-todo"> 
         <button type="submit">Save</button>
       </form>
@@ -26,33 +25,41 @@ export default {
       return value.toUpperCase()
     }
   },
+  mounted () {
+    this.todos = JSON.parse(localStorage['todos'])
+    
+    this.$nextTick (()=> {
+      this.$destroy()
+    })
+
+  },
   methods: {
-    // save () {
-    //   this.$validator.validateAll().then(result => {
-    //     console.log(result)
-    //     if(result) {
-    //         let todoObj = {
-    //       text: this.newTodo,
-    //       time: Math.round(Date.now() / 1000),
-    //       completed: false
-    //     }
-    //     this.todos.push(todoObj)
-    //     this.newTodo = ''
-    //     }
-    //   })
-    // },
-    async save () {
-      let result = await this.$validator.validateAll()
-      if(result) {
-          let todoObj = {
-        text: this.newTodo,
-        time: Math.round(Date.now() / 1000),
-        completed: false
-      }
-      this.todos.push(todoObj)
-      this.newTodo = ''
-      }
-    }
+    save () {
+      this.$validator.validateAll().then(result => {
+        if(result) {
+            let todoObj = {
+          text: this.newTodo,
+          time: Math.round(Date.now() / 1000),
+          completed: false
+        }
+        this.todos.push(todoObj)
+        localStorage['todos'] = JSON.stringify(this.todos)
+        this.newTodo = ''
+        }
+      })
+    },
+    // async save () {
+    //   let result = await this.$validator.validateAll()
+    //   if(result) {
+    //       let todoObj = {
+    //     text: this.newTodo,
+    //     time: Math.round(Date.now() / 1000),
+    //     completed: false
+    //   }
+    //   this.todos.push(todoObj)
+    //   this.newTodo = ''
+    //   }
+    // }
   },
   data () {
     return {
