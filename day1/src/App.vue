@@ -1,37 +1,52 @@
 <template>
   <div id="app">
-    <ul>
-      <li :id="todo.time" v-for="todo in todos" :key="todo.time">
-        <span :class="{ 'green' : todo.completed, 'red': !todo.completed }">
-          {{todo.text | capitalize}}
-        </span>
-        <!-- <span :style="{ 'color' : colorOfText }">
-          {{todo.text | capitalize}}
-        </span> -->
-      </li>
-      <form @submit.prevent="save">
-        <input type="text" v-validate="'required'" v-model="newTodo" name="new-todo"> 
-        <button type="submit">Save</button>
-      </form>
-    </ul>
+    <TodoList />
+    <hr/>
+    <SearchBox />
+    <hr/>
+    <AddForm />
   </div>
 </template>
 
 <script>
+import TodoList from "./components/TodoList"
+import SearchBox from "./components/SearchBox"
+import AddForm from "./components/AddForm"
+
 export default {
   name: 'App',
+  components: { TodoList, SearchBox, AddForm},
   filters: {
     capitalize (value) {
       return value.toUpperCase()
     }
   },
   mounted () {
-    this.todos = JSON.parse(localStorage['todos'])
-    
-    this.$nextTick (()=> {
-      this.$destroy()
-    })
+    if (localStorage['todos']) {
+      this.todos = JSON.parse(localStorage['todos'])
+    } else {
+      this.todos = []
+    }
 
+    // this.$nextTick (()=> {
+    //   this.$destroy()
+    // })
+  },
+  watch: {
+    todos (current, old) {
+      console.log(current)
+    }
+  },
+  computed: {
+    sortTodos () {
+      let todos = this.todos
+      
+      return todos.sort((a,b) => {
+        return b.time - a.time 
+      }).filter(todo => {
+        return todo.text.indexOf(this.searchText) !== -1
+      })
+    }
   },
   methods: {
     save () {
@@ -48,21 +63,10 @@ export default {
         }
       })
     },
-    // async save () {
-    //   let result = await this.$validator.validateAll()
-    //   if(result) {
-    //       let todoObj = {
-    //     text: this.newTodo,
-    //     time: Math.round(Date.now() / 1000),
-    //     completed: false
-    //   }
-    //   this.todos.push(todoObj)
-    //   this.newTodo = ''
-    //   }
-    // }
   },
   data () {
     return {
+      searchText: '',
       socialNetWork: {
       },
       colorOfText: 'red',
