@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <ul>
-      <li v-for="todo in todos" :key="todo.time">
+      <li :id="todo.time" v-for="todo in todos" :key="todo.time" v-show="!todo.completed" >
         {{todo.text | capitalize}}
       </li>
     </ul>
