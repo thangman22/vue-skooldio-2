@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-    <h1>{{list.join(',')}}</h1>
-    <h1>{{number}}</h1>
-    <h1>{{text}}</h1>
+    <ul>
+      <li v-for="todo in todos" :key="todo.time">
+        {{todo.text}}
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -11,9 +13,23 @@ export default {
   name: 'App',
   data () {
     return {
-      text: 'Hello Skooldio',
-      number: 10,
-      list: ['a','b','c']
+      todos: [
+        {
+          text: '<strong>Todo1</strong>',
+          time: 1540352507,
+          completed: true
+        },
+        {
+          text: 'Todo2',
+          time: 1540352529,
+          completed: true
+        },
+        {
+          text: 'Todo3',
+          time: 1540352535,
+          completed: false
+        }
+      ]
     }
   }
 }
