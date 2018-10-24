@@ -1,9 +1,9 @@
 <template>
     <p>
         <ul>
-            <li :id="todo.time" v-for="todo in sortTodos" :key="todo.time">
+            <li :id="todo.time" v-for="todo in todos" :key="todo.time">
             <span :class="{ 'green' : todo.completed, 'red': !todo.completed }">
-                {{todo.text}}
+                {{todo.text | capitalize}}
             </span>
             </li>
         </ul>
@@ -12,7 +12,15 @@
 
 <script>
 export default {
-    name: 'TodoList'
+    name: 'TodoList',
+    props: {
+        todos: Array
+    },
+    filters: {
+        capitalize (value) {
+            return value.toUpperCase()
+        }
+    },
 }
 </script>
 

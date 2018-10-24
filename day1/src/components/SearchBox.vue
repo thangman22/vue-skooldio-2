@@ -6,7 +6,17 @@
 
 <script>
 export default {
-    name: 'SearchBox'
+    name: 'SearchBox',
+    data () {
+        return {
+            searchText: ''
+        }
+    },
+    watch: {
+        searchText(val) {
+            this.$emit('onSearchTextChange',val)
+        }
+    },
 }
 </script>
 

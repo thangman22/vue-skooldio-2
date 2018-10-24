@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <TodoList />
+    <TodoList v-border :todos="sortTodos"/>
     <hr/>
-    <SearchBox />
+    <SearchBox v-border @onSearchTextChange="changeSearchText"/>
     <hr/>
-    <AddForm />
+    <AddForm @onSave="saveData"/>
   </div>
 </template>
 
@@ -12,35 +12,28 @@
 import TodoList from "./components/TodoList"
 import SearchBox from "./components/SearchBox"
 import AddForm from "./components/AddForm"
+import AddMockTodo from "./components/AddMockTodo"
 
 export default {
   name: 'App',
-  components: { TodoList, SearchBox, AddForm},
-  filters: {
-    capitalize (value) {
-      return value.toUpperCase()
-    }
-  },
+  components: { TodoList, SearchBox, AddForm, AddMockTodo },
   mounted () {
     if (localStorage['todos']) {
       this.todos = JSON.parse(localStorage['todos'])
     } else {
       this.todos = []
     }
-
-    // this.$nextTick (()=> {
-    //   this.$destroy()
-    // })
   },
-  watch: {
-    todos (current, old) {
-      console.log(current)
+  directives: {
+    border: {
+      inserted (el) {
+        el.style.border = '1px solid #000'
+      }
     }
   },
   computed: {
     sortTodos () {
       let todos = this.todos
-      
       return todos.sort((a,b) => {
         return b.time - a.time 
       }).filter(todo => {
@@ -49,19 +42,18 @@ export default {
     }
   },
   methods: {
-    save () {
-      this.$validator.validateAll().then(result => {
-        if(result) {
-            let todoObj = {
-          text: this.newTodo,
-          time: Math.round(Date.now() / 1000),
-          completed: false
-        }
-        this.todos.push(todoObj)
-        localStorage['todos'] = JSON.stringify(this.todos)
-        this.newTodo = ''
-        }
-      })
+    changeSearchText (text) {
+      this.searchText = text
+    },
+    saveData (newTodo) {
+      let todoObj = {
+        text: newTodo,
+        time: Math.round(Date.now() / 1000),
+        completed: false
+      }
+      this.todos.push(todoObj)
+      localStorage['todos'] = JSON.stringify(this.todos)
+      this.newTodo = ''
     },
   },
   data () {
