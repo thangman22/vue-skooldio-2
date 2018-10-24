@@ -9,6 +9,11 @@
           {{todo.text | capitalize}}
         </span> -->
       </li>
+      <input type="text" v-model="newTodo"> 
+      <button @click="save">Save</button>
+
+      <button @click="addObj">Add obj</button>
+
     </ul>
   </div>
 </template>
@@ -17,16 +22,30 @@
 export default {
   name: 'App',
   filters: {
-    // addText (value) {
-    //   return value + ' 1'
-    // },
     capitalize (value) {
       return value.toUpperCase()
     }
   },
+  methods: {
+    addObj () {
+      //this.socialNetWork.facebook = 'skooldio'
+      this.$set(this.socialNetWork,'facebook','skooldio')
+    },
+    save () {
+      let todoObj = {
+        text: this.newTodo,
+        time: Math.round(Date.now() / 1000),
+        completed: false
+      }
+      this.todos.push(todoObj)
+    }
+  },
   data () {
     return {
+      socialNetWork: {
+      },
       colorOfText: 'red',
+      newTodo: '',
       todos: [
         {
           text: 'todo1',
