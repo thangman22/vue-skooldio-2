@@ -24,6 +24,11 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+  .red {
+    color:orangered;
+  }
+  .green {
+    color: darkgreen;
+  }
 </style>

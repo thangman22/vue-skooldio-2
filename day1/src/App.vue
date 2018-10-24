@@ -1,8 +1,16 @@
 <template>
   <div id="app">
-    <TodoList v-border :todos="sortTodos"/>
+    <AlertBar>
+      <template slot="title">
+        This is todo
+      </template>
+      <template slot="sub-title">
+        This is my todo for everyday
+      </template>
+    </AlertBar>
+    <TodoList :todos="sortTodos"/>
     <hr/>
-    <SearchBox v-border @onSearchTextChange="changeSearchText"/>
+    <SearchBox @onSearchTextChange="changeSearchText"/>
     <hr/>
     <AddForm @onSave="saveData"/>
   </div>
@@ -13,16 +21,19 @@ import TodoList from "./components/TodoList"
 import SearchBox from "./components/SearchBox"
 import AddForm from "./components/AddForm"
 import AddMockTodo from "./components/AddMockTodo"
+import AlertBar from "./components/AlertBar"
+import ConsoleMixin from "./mixins/ConsoleMixin"
 
 export default {
   name: 'App',
-  components: { TodoList, SearchBox, AddForm, AddMockTodo },
+  components: { TodoList, SearchBox, AddForm, AddMockTodo, AlertBar },
+  mixins: [ConsoleMixin],
   mounted () {
     if (localStorage['todos']) {
       this.todos = JSON.parse(localStorage['todos'])
-    } else {
-      this.todos = []
     }
+    
+    this.consoleOne()
   },
   directives: {
     border: {
@@ -85,11 +96,4 @@ export default {
 }
 </script>
 
-<style scoped>
-  .red {
-    color:orangered;
-  }
-  .green {
-    color: darkgreen;
-  }
-</style>
+
