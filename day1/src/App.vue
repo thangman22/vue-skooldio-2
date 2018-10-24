@@ -10,7 +10,8 @@
         </span> -->
       </li>
       <form @submit.prevent="save">
-        <input type="text" v-model="newTodo"> 
+        <span>{{ errors.first('new-todo') }}</span>
+        <input type="text" v-validate="'required'" v-model="newTodo" name="new-todo"> 
         <button type="submit">Save</button>
       </form>
     </ul>
@@ -26,15 +27,31 @@ export default {
     }
   },
   methods: {
-    save () {
-
-      let todoObj = {
+    // save () {
+    //   this.$validator.validateAll().then(result => {
+    //     console.log(result)
+    //     if(result) {
+    //         let todoObj = {
+    //       text: this.newTodo,
+    //       time: Math.round(Date.now() / 1000),
+    //       completed: false
+    //     }
+    //     this.todos.push(todoObj)
+    //     this.newTodo = ''
+    //     }
+    //   })
+    // },
+    async save () {
+      let result = await this.$validator.validateAll()
+      if(result) {
+          let todoObj = {
         text: this.newTodo,
         time: Math.round(Date.now() / 1000),
         completed: false
       }
       this.todos.push(todoObj)
       this.newTodo = ''
+      }
     }
   },
   data () {
