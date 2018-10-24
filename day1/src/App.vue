@@ -1,8 +1,13 @@
 <template>
   <div id="app">
     <ul>
-      <li :id="todo.time" v-for="todo in todos" :key="todo.time" v-show="!todo.completed" >
-        {{todo.text | capitalize}}
+      <li :id="todo.time" v-for="todo in todos" :key="todo.time">
+        <span :class="{ 'green' : todo.completed, 'red': !todo.completed }">
+          {{todo.text | capitalize}}
+        </span>
+        <!-- <span :style="{ 'color' : colorOfText }">
+          {{todo.text | capitalize}}
+        </span> -->
       </li>
     </ul>
   </div>
@@ -21,6 +26,7 @@ export default {
   },
   data () {
     return {
+      colorOfText: 'red',
       todos: [
         {
           text: 'todo1',
@@ -44,5 +50,10 @@ export default {
 </script>
 
 <style>
-
+  .red {
+    color:orangered;
+  }
+  .green {
+    color: darkgreen;
+  }
 </style>
