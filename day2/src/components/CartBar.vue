@@ -1,6 +1,7 @@
 <template>
     <div class="cart-bar">
-       {{totalProduct}} <strong>Products | Total price</strong> {{totalPrice}}
+        <router-link to="/products">Go to Products</router-link> | 
+       <router-link to="/cart">{{totalProduct}} <strong>Products | Total price</strong> {{totalPrice}}</router-link>
     </div>
 </template>
 

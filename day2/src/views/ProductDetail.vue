@@ -4,7 +4,7 @@
         <img :src="product.ProductPicUrl" width="300"/><br/>
         <h2>{{product.Name}}</h2>
         {{product.Description}}<br/>
-        <button class="atc-button" @click="addToCart(product)">Add to Cart</button>
+        <button class="atc-button" @click="$store.dispatch('addToCart',product)">Add to Cart</button>
         <p>
             <h2 class="green">{{product.Price}} {{product.CurrencyCode}}</h2>
         </p>
@@ -26,12 +26,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions([
-            'addToCart',
-        ]),
-        ...mapMutations([
-            'reCalculateTotalPrice'
-        ])
+
     },
     mounted() {
         this.product = this.products.filter((product) => {
